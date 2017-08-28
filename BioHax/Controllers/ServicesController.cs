@@ -29,7 +29,22 @@ namespace BioHax
         // GET: Services
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Service.ToListAsync());
+
+            var services = from s in _context.Service
+                           select s;
+
+            var isAuthorized = User.IsInRole(Constants.ServiceManagersRole) ||
+                               User.IsInRole(Constants.ServiceAdministratorsRole);
+
+            var currentUserId = _userManager.GetUserId(User);
+
+            // Only approved services are shown UNLESS youre authorized to see them, or you are the owner
+            if(!isAuthorized)
+            {
+                services = services.Where(s => s.Status == ServiceStatus.Approved || s.OwnerID == currentUserId);
+            }
+
+            return View(await services.ToListAsync());
         }
 
         // GET: Services/Details/5
@@ -45,6 +60,13 @@ namespace BioHax
             if (service == null)
             {
                 return NotFound();
+            }
+
+            var isAuthorizedRead = await _authorizationService.AuthorizeAsync(User, service, ServiceOperations.Read);
+
+            if (service.Status != ServiceStatus.Approved && !isAuthorizedRead)
+            {
+                return new ChallengeResult();
             }
 
             return View(service);
