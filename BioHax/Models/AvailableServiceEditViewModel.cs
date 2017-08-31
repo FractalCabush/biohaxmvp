@@ -2,26 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace BioHax.Models
 {
-    public abstract class Service
+    public class AvailableServiceEditViewModel
     {
         public int ServiceId { get; set; }
-
-        // user ID from AspNetUser table
-        public string OwnerID { get; set; }
-
+        [Required(ErrorMessage = "Name is required")]
         public string Provider { get; set; }
         public string Type { get; set; }
-
-        public ServiceStatus Status { get; set; }
-    }
-
-    public enum ServiceStatus
-    {
-        Submitted,
-        Approved,
-        Rejected
     }
 }

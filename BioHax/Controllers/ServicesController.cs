@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BioHax
@@ -15,22 +17,25 @@ namespace BioHax
         private readonly ApplicationDbContext _context;
         private readonly IAuthorizationService _authorizationService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger _logger;
 
         public ServicesController(
             ApplicationDbContext context,
             IAuthorizationService authorizationHandler,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ILogger<ServicesController> logger)
         {
             _context = context;
             _userManager = userManager;
             _authorizationService = authorizationHandler;
+            _logger = logger;
         }
 
         // GET: Services
         public async Task<IActionResult> Index()
         {
 
-            var services = from s in _context.Service
+            var services = from s in _context.NDEFUri
                            select s;
 
             var isAuthorized = User.IsInRole(Constants.ServiceManagersRole) ||
@@ -41,7 +46,7 @@ namespace BioHax
             // Only approved services are shown UNLESS youre authorized to see them, or you are the owner
             if(!isAuthorized)
             {
-                services = services.Where(s => s.Status == ServiceStatus.Approved || s.OwnerID == currentUserId);
+                services = services.Where(s => s.OwnerID == currentUserId);
             }
 
             return View(await services.ToListAsync());
@@ -55,13 +60,23 @@ namespace BioHax
                 return NotFound();
             }
 
-            var service = await _context.Service
+            var service = await _context.NDEFUri
                 .SingleOrDefaultAsync(m => m.ServiceId == id);
+
+            var record = await _context.Record
+                .SingleOrDefaultAsync(r => r.RecordID == id);
+
             if (service == null)
             {
                 return NotFound();
             }
 
+            if (record  == null)
+            {
+                return NotFound();
+            }
+
+            //service.Record = record;
             var isAuthorizedRead = await _authorizationService.AuthorizeAsync(User, service, ServiceOperations.Read);
 
             if (service.Status != ServiceStatus.Approved && !isAuthorizedRead)
@@ -83,13 +98,13 @@ namespace BioHax
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ServiceEditViewModel editModel)
+        public async Task<IActionResult> Create(NDEFUriEditViewModel editModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(editModel);
             }
-            var service = ViewModel_to_model(new Service(), editModel);
+            var service = ViewModel_to_model(new NDEFUri(), editModel);
 
             service.OwnerID = _userManager.GetUserId(User);
 
@@ -114,9 +129,15 @@ namespace BioHax
                 return NotFound();
             }
 
-            var service = await _context.Service.SingleOrDefaultAsync(m => m.ServiceId == id);
+            var service = await _context.NDEFUri.SingleOrDefaultAsync(m => m.ServiceId == id);
+            var record = await _context.Record.SingleOrDefaultAsync(r => r.RecordID == id);
 
             if (service == null)
+            {
+                return NotFound();
+            }
+
+            if (record == null)
             {
                 return NotFound();
             }
@@ -138,7 +159,7 @@ namespace BioHax
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ServiceEditViewModel editModel)
+        public async Task<IActionResult> Edit(int id, NDEFUriEditViewModel editModel)
         {
             if (!ModelState.IsValid)
             {
@@ -146,8 +167,13 @@ namespace BioHax
             }
 
             // Fetch Service from DB to get OwnerID.
-            var service = await _context.Service.SingleOrDefaultAsync(m => m.ServiceId == id);
+            var service = await _context.NDEFUri.SingleOrDefaultAsync(m => m.ServiceId == id);
+            var record = await _context.Record.SingleOrDefaultAsync(r => r.RecordID == id);
             if (service == null)
+            {
+                return NotFound();
+            }
+            if (record == null)
             {
                 return NotFound();
             }
@@ -159,6 +185,7 @@ namespace BioHax
             }
 
             service = ViewModel_to_model(service, editModel);
+            //record = service.Record;
 
             if (service.Status == ServiceStatus.Approved)
             {
@@ -171,6 +198,7 @@ namespace BioHax
             try
             {
                 _context.Update(service);
+                //_context.Update(record);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -195,7 +223,7 @@ namespace BioHax
                 return NotFound();
             }
 
-            var service = await _context.Service
+            var service = await _context.NDEFUri
                 .SingleOrDefaultAsync(m => m.ServiceId == id);
             if (service == null)
             {
@@ -216,7 +244,7 @@ namespace BioHax
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var service = await _context.Service.SingleOrDefaultAsync(m => m.ServiceId == id);
+            var service = await _context.NDEFUri.SingleOrDefaultAsync(m => m.ServiceId == id);
             var isAuthorized = await _authorizationService.AuthorizeAsync(User, service, ServiceOperations.Delete);
             if(!isAuthorized)
             {
@@ -224,31 +252,53 @@ namespace BioHax
             }
 
 
-            _context.Service.Remove(service);
+            _context.NDEFUri.Remove(service);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetStatus(int id, ServiceStatus status)
+        {
+            var service = await _context.NDEFUri.SingleOrDefaultAsync(s => s.ServiceId == id);
+            var serviceOperation = (status == ServiceStatus.Approved) ? ServiceOperations.Approve
+                                                                      : ServiceOperations.Reject;
+            var isAuthorized = await _authorizationService.AuthorizeAsync(User, service, serviceOperation);
+
+            if(!isAuthorized)
+            {
+                return new ChallengeResult();
+            }
+
+            service.Status = status;
+            _context.NDEFUri.Update(service);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool ServiceExists(int id)
         {
-            return _context.Service.Any(e => e.ServiceId == id);
+            return _context.NDEFUri.Any(e => e.ServiceId == id);
         }
 
-        private Service ViewModel_to_model(Service service, ServiceEditViewModel editModel)
+        private NDEFUri ViewModel_to_model(NDEFUri service, NDEFUriEditViewModel editModel)
         {
             service.Provider = editModel.Provider;
             service.Type = editModel.Type;
-
+            service.SaveRecord(editModel.URI, 1);
+            _logger.LogWarning("What is the record URI ? {}", service.Record.URI);
             return service;
         }
 
-        private ServiceEditViewModel Model_to_viewModel(Service service)
+        private NDEFUriEditViewModel Model_to_viewModel(NDEFUri service)
         {
-            var editModel = new ServiceEditViewModel();
+            var editModel = new NDEFUriEditViewModel();
 
             editModel.ServiceId = service.ServiceId;
             editModel.Provider = service.Provider;
             editModel.Type = service.Type;
+            editModel.URI = Encoding.UTF8.GetString(service.Record.URI);
 
             return editModel;
         }

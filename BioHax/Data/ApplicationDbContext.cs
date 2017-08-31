@@ -21,8 +21,11 @@ namespace BioHax.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+            builder.Entity<Service>().ToTable("Service");
         }
 
-        public DbSet<BioHax.Models.Service> Service { get; set; }
+        public DbSet<BioHax.Models.NDEFUri> NDEFUri { get; set; }
+        public DbSet<BioHax.Models.Record> Record { get; set; }
     }
 }

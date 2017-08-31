@@ -1,0 +1,19 @@
+@using BioHax.Models
+
+<div class="row">
+	<div class="col-md-12 col-sm-12">
+		<h2>Available Services</h2>
+		<ul class="list-group">
+		@for (int i = 0; i < 5; i++)
+		{
+				<li class="list-group-item">
+					<p>Service name</p>
+					<p>Service type</p>
+					<p>
+						<a asp-action="Create">Add service of this type to your services</a>
+					</p>
+				</li>
+		}
+		</ul>
+	</div>
+</div>

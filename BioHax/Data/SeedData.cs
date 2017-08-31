@@ -67,46 +67,51 @@ namespace BioHax.Data
 
         public static void SeedDB(ApplicationDbContext context, string adminID)
         {
-            if (context.Service.Any())
+            if (context.NDEFUri.Any())
             {
                 return;   // DB has been seeded
             }
 
-            context.Service.AddRange(
-                new Service
+            context.NDEFUri.AddRange(
+                new NDEFUri
                 {
                     Provider = "SJ",
                     Type = "Third Party",
                     Status = ServiceStatus.Approved,
-                    OwnerID = adminID
+                    OwnerID = adminID,
+                    Record = new NDEFUri().Record
                 },
-                new Service
+                new NDEFUri
                 {
                     Provider = "Gymbolaget",
                     Type = "Third Party",
                     Status = ServiceStatus.Approved,
-                    OwnerID = adminID
+                    OwnerID = adminID,
+                    Record = new NDEFUri().Record
                 },
-                 new Service
+                 new NDEFUri
                  {
                      Provider = "VCard",
                      Type = "NDEF",
                      Status = ServiceStatus.Approved,
-                     OwnerID = adminID
+                     OwnerID = adminID,
+                     Record = new NDEFUri().Record
                  },
-                new Service
+                new NDEFUri
                 {
                     Provider = "URI",
                     Type = "NDEF",
                     Status = ServiceStatus.Approved,
-                    OwnerID = adminID
+                    OwnerID = adminID,
+                    Record = new NDEFUri().Record
                 },
-                new Service
+                new NDEFUri
                 {
                     Provider = "Application Trigger",
                     Type = "NDEF",
                     Status = ServiceStatus.Approved,
-                    OwnerID = adminID
+                    OwnerID = adminID,
+                    Record = new NDEFUri().Record
                 }
              );
             context.SaveChanges();
