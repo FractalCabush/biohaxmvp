@@ -1,11 +1,11 @@
-@model IEnumerable<BioHax.Models.Service>
+@model IEnumerable<BioHax.Models.NDEFUri>
 @using BioHax.Authorization;
 
 @{
     ViewData["Title"] = "Index";
 }
 <div class="container-fluid">
-	<h2>Index</h2>
+	<h2>Your added services</h2>
 	<p>
 		<a asp-action="Create">Create New</a>
 	</p>
@@ -15,10 +15,6 @@
 				<th>
 					@Html.DisplayNameFor(model => model.Provider)
 				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Type)
-				</th>
-				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,9 +23,6 @@
 				<tr>
 					<td>
 						@Html.DisplayFor(modelItem => item.Provider)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Type)
 					</td>
 					<td>
 						@if (await AuthorizationService.AuthorizeAsync(User, item, ServiceOperations.Update))

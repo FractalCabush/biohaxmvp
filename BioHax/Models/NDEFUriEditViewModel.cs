@@ -9,9 +9,9 @@ namespace BioHax.Models
     public class NDEFUriEditViewModel
     {
         public int ServiceId { get; set; }
-        [Required(ErrorMessage = "Name is required")]
+        [Required(ErrorMessage = "Provider is required")]
         public string Provider { get; set; }
-        public string Type { get; set; }
+        [Required(ErrorMessage = "URI is required")]
         public string URI { get; set; }
     }
 }

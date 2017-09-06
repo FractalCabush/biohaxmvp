@@ -75,43 +75,33 @@ namespace BioHax.Data
             context.NDEFUri.AddRange(
                 new NDEFUri
                 {
-                    Provider = "SJ",
-                    Type = "Third Party",
                     Status = ServiceStatus.Approved,
                     OwnerID = adminID,
-                    Record = new NDEFUri().Record
+                    Record = new NDEFUri("").Record,
                 },
                 new NDEFUri
                 {
-                    Provider = "Gymbolaget",
-                    Type = "Third Party",
                     Status = ServiceStatus.Approved,
                     OwnerID = adminID,
-                    Record = new NDEFUri().Record
+                    Record = new NDEFUri("").Record
                 },
                  new NDEFUri
                  {
-                     Provider = "VCard",
-                     Type = "NDEF",
                      Status = ServiceStatus.Approved,
                      OwnerID = adminID,
-                     Record = new NDEFUri().Record
+                     Record = new NDEFUri("").Record
                  },
                 new NDEFUri
                 {
-                    Provider = "URI",
-                    Type = "NDEF",
                     Status = ServiceStatus.Approved,
                     OwnerID = adminID,
-                    Record = new NDEFUri().Record
+                    Record = new NDEFUri("").Record
                 },
                 new NDEFUri
                 {
-                    Provider = "Application Trigger",
-                    Type = "NDEF",
                     Status = ServiceStatus.Approved,
                     OwnerID = adminID,
-                    Record = new NDEFUri().Record
+                    Record = new NDEFUri("").Record
                 }
              );
             context.SaveChanges();

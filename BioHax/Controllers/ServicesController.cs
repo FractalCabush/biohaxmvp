@@ -60,23 +60,15 @@ namespace BioHax
                 return NotFound();
             }
 
-            var service = await _context.NDEFUri
+            var service = await _context.NDEFUri.Include(r => r.Record)
                 .SingleOrDefaultAsync(m => m.ServiceId == id);
 
-            var record = await _context.Record
-                .SingleOrDefaultAsync(r => r.RecordID == id);
 
             if (service == null)
             {
                 return NotFound();
             }
 
-            if (record  == null)
-            {
-                return NotFound();
-            }
-
-            //service.Record = record;
             var isAuthorizedRead = await _authorizationService.AuthorizeAsync(User, service, ServiceOperations.Read);
 
             if (service.Status != ServiceStatus.Approved && !isAuthorizedRead)
@@ -88,9 +80,12 @@ namespace BioHax
         }
 
         // GET: Services/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
-            return View();
+            var availableServiceData = await _context.AvailableService.SingleOrDefaultAsync(s => s.ServiceId == id);
+            var editModel = new NDEFUriEditViewModel();
+            editModel.Provider = availableServiceData.Provider;
+            return View(editModel);
         }
 
         // POST: Services/Create
@@ -129,15 +124,10 @@ namespace BioHax
                 return NotFound();
             }
 
-            var service = await _context.NDEFUri.SingleOrDefaultAsync(m => m.ServiceId == id);
-            var record = await _context.Record.SingleOrDefaultAsync(r => r.RecordID == id);
+            var service = await _context.NDEFUri.Include(r => r.Record)
+                                                .SingleOrDefaultAsync(m => m.ServiceId == id);
 
             if (service == null)
-            {
-                return NotFound();
-            }
-
-            if (record == null)
             {
                 return NotFound();
             }
@@ -167,13 +157,10 @@ namespace BioHax
             }
 
             // Fetch Service from DB to get OwnerID.
-            var service = await _context.NDEFUri.SingleOrDefaultAsync(m => m.ServiceId == id);
-            var record = await _context.Record.SingleOrDefaultAsync(r => r.RecordID == id);
+            var service = await _context.NDEFUri.Include(r => r.Record)
+                                    .SingleOrDefaultAsync(m => m.ServiceId == id);
+
             if (service == null)
-            {
-                return NotFound();
-            }
-            if (record == null)
             {
                 return NotFound();
             }
@@ -223,7 +210,7 @@ namespace BioHax
                 return NotFound();
             }
 
-            var service = await _context.NDEFUri
+            var service = await _context.NDEFUri.Include(r => r.Record)
                 .SingleOrDefaultAsync(m => m.ServiceId == id);
             if (service == null)
             {
@@ -244,7 +231,7 @@ namespace BioHax
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var service = await _context.NDEFUri.SingleOrDefaultAsync(m => m.ServiceId == id);
+            var service = await _context.NDEFUri.Include(r => r.Record).SingleOrDefaultAsync(m => m.ServiceId == id);
             var isAuthorized = await _authorizationService.AuthorizeAsync(User, service, ServiceOperations.Delete);
             if(!isAuthorized)
             {
@@ -285,9 +272,7 @@ namespace BioHax
         private NDEFUri ViewModel_to_model(NDEFUri service, NDEFUriEditViewModel editModel)
         {
             service.Provider = editModel.Provider;
-            service.Type = editModel.Type;
             service.SaveRecord(editModel.URI, 1);
-            _logger.LogWarning("What is the record URI ? {}", service.Record.URI);
             return service;
         }
 
@@ -297,8 +282,7 @@ namespace BioHax
 
             editModel.ServiceId = service.ServiceId;
             editModel.Provider = service.Provider;
-            editModel.Type = service.Type;
-            editModel.URI = Encoding.UTF8.GetString(service.Record.URI);
+            editModel.URI = service.Record.FormattedURI;
 
             return editModel;
         }

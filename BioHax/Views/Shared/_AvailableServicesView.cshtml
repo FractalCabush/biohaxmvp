@@ -1,18 +1,31 @@
 @using BioHax.Models
+@model IEnumerable<BioHax.Models.AvailableService>
 
 <div class="row">
 	<div class="col-md-12 col-sm-12">
 		<h2>Available Services</h2>
 		<ul class="list-group">
-		@for (int i = 0; i < 5; i++)
+		@foreach (var item in Model)
 		{
-				<li class="list-group-item">
-					<p>Service name</p>
-					<p>Service type</p>
-					<p>
-						<a asp-action="Create">Add service of this type to your services</a>
-					</p>
-				</li>
+			<li class="list-group-item">
+				<p>@Html.DisplayNameFor(modelItem => item.Provider)</p>
+				<p>@Html.DisplayNameFor(modelItem => item.Type)</p>
+				<p>@Html.DisplayNameFor(modelItem => item.Description)</p>
+				<p>
+					<a asp-controller="Services" asp-action="Create">Add service of this type to your services</a>
+				</p>
+				@if (await AuthorizationService.AuthorizeAsync(User, item, ServiceOperations.Update))
+				{
+					<a asp-action="Edit" asp-route-id="@item.ServiceId">Edit</a>
+
+				}
+				<a asp-action="Details" asp-route-id="@item.ServiceId">Details</a>
+				@if (await AuthorizationService.AuthorizeAsync(User, item, ServiceOperations.Delete))
+				{
+					<text> | </text>
+					<a asp-action="Delete" asp-route-id="@item.ServiceId">Delete</a>
+				}
+			</li>
 		}
 		</ul>
 	</div>

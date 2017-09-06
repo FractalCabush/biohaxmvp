@@ -219,6 +219,17 @@ namespace BioHax.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("BioHax.Models.AvailableService", b =>
+                {
+                    b.HasBaseType("BioHax.Models.Service");
+
+                    b.Property<string>("Description");
+
+                    b.ToTable("AvailableService");
+
+                    b.HasDiscriminator().HasValue("AvailableService");
+                });
+
             modelBuilder.Entity("BioHax.Models.NDEFUri", b =>
                 {
                     b.HasBaseType("BioHax.Models.Service");

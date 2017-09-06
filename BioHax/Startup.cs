@@ -111,9 +111,14 @@ namespace BioHax
 
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "AvailableServices",
+                    template: "{controller=AvailableServices}/{action=Available}/{id?}");
             });
 
             var testUserPw = Configuration["SeedUserPW"];

@@ -27,5 +27,6 @@ namespace BioHax.Data
 
         public DbSet<BioHax.Models.NDEFUri> NDEFUri { get; set; }
         public DbSet<BioHax.Models.Record> Record { get; set; }
+        public DbSet<BioHax.Models.AvailableService> AvailableService { get; set; }
     }
 }

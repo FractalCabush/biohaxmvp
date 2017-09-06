@@ -1,0 +1,66 @@
+@model IEnumerable<BioHax.Models.AvailableService>
+@using BioHax.Authorization;
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container-fluid">
+	<h2>Available Services</h2>
+	@if (User.IsInRole(Constants.ServiceAdministratorsRole) || User.IsInRole(Constants.ServiceManagersRole))
+	{
+		<p>
+			<a asp-action="Create">Create New</a>
+		</p>
+	}
+
+	<table class="table">
+		<thead>
+			<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.Provider)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Type)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Description)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Status)
+					</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+	@foreach (var item in Model) {
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Provider)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Type)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Status)
+				</td>
+				<td>
+					@if (await AuthorizationService.AuthorizeAsync(User, item, ServiceOperations.Update))
+					{
+						<a asp-action="Edit" asp-route-id="@item.ServiceId">Edit</a><text> | </text>
+
+					}
+					<a asp-action="Details" asp-route-id="@item.ServiceId">Details</a>
+					@if (await AuthorizationService.AuthorizeAsync(User, item, ServiceOperations.Delete))
+					{
+						<text> | </text>
+						<a asp-action="Delete" asp-route-id="@item.ServiceId">Delete</a>
+					}
+				</td>
+			</tr>
+	}
+		</tbody>
+	</table>
+</div>

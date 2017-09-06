@@ -11,10 +11,6 @@ namespace BioHax.Models
 
         // user ID from AspNetUser table
         public string OwnerID { get; set; }
-
-        public string Provider { get; set; }
-        public string Type { get; set; }
-
         public ServiceStatus Status { get; set; }
     }
 

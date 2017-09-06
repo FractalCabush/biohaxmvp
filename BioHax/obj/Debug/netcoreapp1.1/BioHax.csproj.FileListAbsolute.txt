@@ -5,8 +5,8 @@ C:\Users\Fresh\source\repos\BioHax\BioHax\bin\Debug\netcoreapp1.1\BioHax.dll
 C:\Users\Fresh\source\repos\BioHax\BioHax\bin\Debug\netcoreapp1.1\BioHax.pdb
 C:\Users\Fresh\source\repos\BioHax\BioHax\obj\Debug\netcoreapp1.1\BioHax.csprojResolveAssemblyReference.cache
 C:\Users\Fresh\source\repos\BioHax\BioHax\obj\Debug\netcoreapp1.1\BioHax.csproj.CoreCompileInputs.cache
-C:\Users\Fresh\source\repos\BioHax\BioHax\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
 C:\Users\Fresh\source\repos\BioHax\BioHax\obj\Debug\netcoreapp1.1\BioHax.AssemblyInfoInputs.cache
 C:\Users\Fresh\source\repos\BioHax\BioHax\obj\Debug\netcoreapp1.1\BioHax.AssemblyInfo.cs
 C:\Users\Fresh\source\repos\BioHax\BioHax\obj\Debug\netcoreapp1.1\BioHax.dll
 C:\Users\Fresh\source\repos\BioHax\BioHax\obj\Debug\netcoreapp1.1\BioHax.pdb
+C:\Users\Fresh\source\repos\Biohax\BioHax\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs

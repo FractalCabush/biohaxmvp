@@ -17,16 +17,23 @@ namespace BioHax.Models
             this.Record = new Record();
         }
 
+        public NDEFUri(string defaultURI)
+        {
+            this.Record = new Record();
+            this.SaveRecord(defaultURI, 0x01);
+        }
+
         public void SaveRecord(string URI, int identiferCode)
         {
-            this.Record.identifierCode = 0xD1;
-            this.Record.recordTypeLength = 0x01;
-            this.Record.recordLength = (byte)(Encoding.UTF8.GetByteCount(URI) - 1);
+            this.Record.IdentifierCode = 0xD1;
+            this.Record.RecordTypeLength = 0x01;
+            this.Record.RecordLength = (byte)(Encoding.UTF8.GetByteCount(URI) - 1);
             this.Record.URIIdentifier = 0x55;
             this.Record.URIRecordType = (byte)identiferCode;
             this.Record.URI = Encoding.ASCII.GetBytes(URI);
         }
 
         public virtual Record Record { get; set; }
+        public string Provider { get; set; }
     }
 }

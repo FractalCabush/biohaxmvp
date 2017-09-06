@@ -8,5 +8,7 @@ namespace BioHax.Models
     public class AvailableService : Service
     {
         public virtual string Description { get; set; }
+        public string Provider { get; set; }
+        public string Type { get; set; }
     }
 }

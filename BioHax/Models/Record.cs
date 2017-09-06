@@ -14,9 +14,9 @@ namespace BioHax.Models
     {
         public int RecordID { get; set; }
 
-        public byte identifierCode { get; set; }
-        public byte recordTypeLength { get; set; }
-        public byte recordLength { get; set; }
+        public byte IdentifierCode { get; set; }
+        public byte RecordTypeLength { get; set; }
+        public byte RecordLength { get; set; }
         public byte URIRecordType { get; set; }
         public byte URIIdentifier { get; set; }
         public byte[] URI { get; set; }
