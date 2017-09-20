@@ -36,7 +36,7 @@ namespace BioHax.Data
             var user = await userManager.FindByNameAsync(UserName);
             if (user == null)
             {
-                user = new ApplicationUser { UserName = UserName };
+                user = new ApplicationUser { UserName = UserName, UID = "00000000000000" };
                 await userManager.CreateAsync(user, testUserPw);
             }
 

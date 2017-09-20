@@ -23,5 +23,9 @@ namespace BioHax.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(14, ErrorMessage = "The {0} must be exactly 14 characters long / 7 bytes long.", MinimumLength = 14)]
+        public string UID { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.1",
-    "signature": "2a0b1a2c85e717fa4018c769792a678b9fa5b9c9"
+    "signature": "fdb259822c7500b04c57c3cb72de67f563c5d925"
   },
   "compilationOptions": {
     "defines": [
@@ -38,7 +38,8 @@
           "Microsoft.Extensions.Logging.Debug": "1.1.2",
           "Microsoft.NETCore.App": "1.1.2",
           "Microsoft.VisualStudio.Web.BrowserLink": "1.1.2",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "1.1.1"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "1.1.1",
+          "Sendgrid": "9.9.0"
         },
         "runtime": {
           "BioHax.dll": {}
@@ -1588,6 +1589,19 @@
             "rid": "win7-x86",
             "assetType": "native"
           }
+        }
+      },
+      "Sendgrid/9.9.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "1.1.2",
+          "NETStandard.Library": "1.6.1",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "runtime": {
+          "lib/netstandard1.3/SendGrid.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/SendGrid.dll": {}
         }
       },
       "System.Collections.NonGeneric/4.3.0": {
@@ -4288,6 +4302,13 @@
       "sha512": "sha512-4cXRTIcttvIreAoqK/5hzTtzepeggac+m5A0rzH+9zLtnFh2J0rLuGeJR4KjNLyKqPzO0kjqrs5lkRJEKX8HAA==",
       "path": "runtime.win7-x86.runtime.native.system.data.sqlclient.sni/4.3.0",
       "hashPath": "runtime.win7-x86.runtime.native.system.data.sqlclient.sni.4.3.0.nupkg.sha512"
+    },
+    "Sendgrid/9.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3v4aIYXqTvhnozBvpCyf+U9DMiZzN9s4m7tpl8RjVHRN0IUKSFwJ0eio7GVjT03vTTUOXhOY8M+15zLYzQGhYQ==",
+      "path": "sendgrid/9.9.0",
+      "hashPath": "sendgrid.9.9.0.nupkg.sha512"
     },
     "System.Collections.NonGeneric/4.3.0": {
       "type": "package",

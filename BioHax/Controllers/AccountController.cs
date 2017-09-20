@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using BioHax.Models;
 using BioHax.Models.AccountViewModels;
 using BioHax.Services;
+using System.Text;
 
 namespace BioHax.Controllers
 {
@@ -57,8 +58,8 @@ namespace BioHax.Controllers
         //
         // POST: /Account/Login
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -105,14 +106,14 @@ namespace BioHax.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, UID = model.UID };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

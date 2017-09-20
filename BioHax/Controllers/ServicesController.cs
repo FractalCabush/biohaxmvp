@@ -34,9 +34,9 @@ namespace BioHax
         // GET: Services
         public async Task<IActionResult> Index()
         {
-
             var services = from s in _context.NDEFUri
                            select s;
+
 
             var isAuthorized = User.IsInRole(Constants.ServiceManagersRole) ||
                                User.IsInRole(Constants.ServiceAdministratorsRole);
@@ -84,6 +84,10 @@ namespace BioHax
         {
             var availableServiceData = await _context.AvailableService.SingleOrDefaultAsync(s => s.ServiceId == id);
             var editModel = new NDEFUriEditViewModel();
+            if (availableServiceData == null)
+            {
+                return Forbid();
+            }
             editModel.Provider = availableServiceData.Provider;
             return View(editModel);
         }

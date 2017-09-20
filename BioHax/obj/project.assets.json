@@ -2234,6 +2234,20 @@
           }
         }
       },
+      "Sendgrid/9.9.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
+          "NETStandard.Library": "1.6.1",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/SendGrid.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/SendGrid.dll": {}
+        }
+      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -6261,6 +6275,21 @@
         "runtime.win7-x86.runtime.native.system.data.sqlclient.sni.4.3.0.nupkg.sha512",
         "runtime.win7-x86.runtime.native.system.data.sqlclient.sni.nuspec",
         "runtimes/win7-x86/native/sni.dll"
+      ]
+    },
+    "Sendgrid/9.9.0": {
+      "sha512": "3v4aIYXqTvhnozBvpCyf+U9DMiZzN9s4m7tpl8RjVHRN0IUKSFwJ0eio7GVjT03vTTUOXhOY8M+15zLYzQGhYQ==",
+      "type": "package",
+      "path": "sendgrid/9.9.0",
+      "files": [
+        "lib/net452/SendGrid.dll",
+        "lib/net452/SendGrid.pdb",
+        "lib/net452/SendGrid.xml",
+        "lib/netstandard1.3/SendGrid.dll",
+        "lib/netstandard1.3/SendGrid.pdb",
+        "lib/netstandard1.3/SendGrid.xml",
+        "sendgrid.9.9.0.nupkg.sha512",
+        "sendgrid.nuspec"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -10946,7 +10975,8 @@
       "Microsoft.Extensions.Logging.Debug >= 1.1.2",
       "Microsoft.NETCore.App >= 1.1.2",
       "Microsoft.VisualStudio.Web.BrowserLink >= 1.1.2",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 1.1.1"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 1.1.1",
+      "SendGrid >= 9.9.0"
     ]
   },
   "packageFolders": {
@@ -10958,11 +10988,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Fresh\\source\\repos\\Biohax\\BioHax\\BioHax.csproj",
+      "projectUniqueName": "C:\\Users\\Fresh\\source\\repos\\BioHax\\BioHax\\BioHax.csproj",
       "projectName": "BioHax",
-      "projectPath": "C:\\Users\\Fresh\\source\\repos\\Biohax\\BioHax\\BioHax.csproj",
+      "projectPath": "C:\\Users\\Fresh\\source\\repos\\BioHax\\BioHax\\BioHax.csproj",
       "packagesPath": "C:\\Users\\Fresh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Fresh\\source\\repos\\Biohax\\BioHax\\obj\\",
+      "outputPath": "C:\\Users\\Fresh\\source\\repos\\BioHax\\BioHax\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Fresh\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -11037,6 +11067,10 @@
           "Microsoft.Extensions.Configuration.UserSecrets": {
             "target": "Package",
             "version": "1.1.2"
+          },
+          "SendGrid": {
+            "target": "Package",
+            "version": "9.9.0"
           },
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",

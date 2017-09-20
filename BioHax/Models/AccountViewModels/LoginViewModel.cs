@@ -18,5 +18,9 @@ namespace BioHax.Models.AccountViewModels
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        [Required]
+        [StringLength(14, ErrorMessage = "The {0} must be exactly 14 characters long / 7 bytes long.", MinimumLength = 14)]
+        public string UID { get; set; }
     }
 }
